@@ -44,6 +44,7 @@ class RegisterPage extends StatelessWidget {
           TextFormField(
             controller: nameController,
             keyboardType: TextInputType.name,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Name',
               prefixIcon: Padding(
@@ -56,6 +57,7 @@ class RegisterPage extends StatelessWidget {
           TextFormField(
             controller: phoneController,
             keyboardType: TextInputType.phone,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Phone Number',
               prefixIcon: Padding(
@@ -68,6 +70,7 @@ class RegisterPage extends StatelessWidget {
           TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Email ID',
               prefixIcon: Padding(
@@ -79,6 +82,7 @@ class RegisterPage extends StatelessWidget {
           const SpaceHeight(20.0),
           TextFormField(
             controller: passwordController,
+            textInputAction: TextInputAction.next,
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'Password',

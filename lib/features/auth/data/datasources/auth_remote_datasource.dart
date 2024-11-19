@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as secure_storage;
+import 'package:oshop_coderay/core/data/datasource/auth_local_datasource.dart';
 
 import '../../../../core/constants/main_url.dart';
 import '../models/request/login_request_model.dart';
@@ -37,7 +38,7 @@ class AuthRemoteDataSourceImplementation extends AuthRemoteDatasource {
 
       if (response.statusCode == 200 && response.data != null) {
         final AuthModel result = AuthModel.fromJson(response.data);
-        await storage.write(key: 'save', value: result.accessToken);
+        AuthLocalDatasourceImplementation(storage).saveAuthData(result);
         return result;
       } else {
         throw MessageValidateModel.fromJson(response.data);
@@ -50,20 +51,22 @@ class AuthRemoteDataSourceImplementation extends AuthRemoteDatasource {
   @override
   Future<MessageValidateModel> logout() async {
     try {
-      String? value = await storage.read(key: 'save');
+      final authData =
+          await AuthLocalDatasourceImplementation(storage).getAuthData();
+      print(authData?.token);
 
       final response = await dio.post(
         "${MainUrl.url}/logout",
         options: Options(
           headers: {
-            'Authorization': "Bearer $value",
+            'Authorization': "Bearer ${authData?.token}",
             "Content-Type": "application/json"
           },
         ),
       );
 
       if (response.statusCode == 200) {
-        await storage.delete(key: 'save');
+        AuthLocalDatasourceImplementation(storage).removeAuthData();
         return MessageValidateModel.fromJson(response.data);
       } else {
         throw MessageValidateModel.fromJson(response.data);
@@ -86,8 +89,8 @@ class AuthRemoteDataSourceImplementation extends AuthRemoteDatasource {
             validateStatus: (status) => status != null && status < 500,
           ));
       if (response.statusCode == 201) {
-        final AuthModel result = AuthModel.fromJson(response.data);
-        await storage.write(key: 'save', value: result.accessToken);
+        final AuthModel result = AuthModel.fromRawJson(response.data);
+        AuthLocalDatasourceImplementation(storage).saveAuthData(result);
         return result;
       } else {
         throw MessageValidateModel.fromJson(response.data);

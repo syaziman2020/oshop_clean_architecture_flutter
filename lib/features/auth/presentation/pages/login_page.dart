@@ -12,8 +12,8 @@ import '../navigation/auth_routes.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final emailController = TextEditingController(text: '');
-  final passwordController = TextEditingController(text: '');
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final authController = Get.find<AuthController>();
 
@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
           const SpaceHeight(60.0),
           TextFormField(
             controller: emailController,
+            textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: 'Email ID',
