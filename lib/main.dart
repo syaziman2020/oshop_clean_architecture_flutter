@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oshop_coderay/core/navigation/app_pages.dart';
+import 'core/navigation/app_pages.dart';
 import 'core/constants/colors.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 

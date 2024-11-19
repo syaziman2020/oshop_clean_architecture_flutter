@@ -10,11 +10,6 @@ class AuthModel extends AuthResponse {
     required this.user,
   }) : super(token: accessToken, user: user);
 
-  factory AuthModel.fromRawJson(String str) =>
-      AuthModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
         accessToken: json["access_token"],
         user: UserModel.fromJson(json["user"]),

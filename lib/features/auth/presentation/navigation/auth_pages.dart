@@ -13,12 +13,12 @@ class AuthPages {
         AuthB(),
       ],
     ),
-    // GetPage(
-    //   name: AuthRoutes.register,
-    //   page: () => RegisterPage(),
-    //   bindings: [
-    //     AuthB(),
-    //   ],
-    // ),
+    GetPage(
+      name: AuthRoutes.register,
+      page: () => RegisterPage(),
+      bindings: [
+        AuthB(),
+      ],
+    ),
   ];
 }

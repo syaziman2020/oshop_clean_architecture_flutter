@@ -3,13 +3,13 @@ class RegisterRequest {
   final String email;
   final String password;
   String? phone;
-  final String roles;
+  String? roles;
 
   RegisterRequest({
     required this.name,
     required this.email,
     required this.password,
-    required this.roles,
-    this.phone,
+    this.roles = "USER",
+    required this.phone,
   });
 }

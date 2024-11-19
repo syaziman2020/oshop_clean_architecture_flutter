@@ -8,7 +8,7 @@ class RegisterRequestModel extends RegisterRequest {
     required super.password,
     required super.name,
     super.phone,
-    super.roles = 'USER',
+    super.roles,
   });
 
   String toRawJson() => json.encode(toJson());

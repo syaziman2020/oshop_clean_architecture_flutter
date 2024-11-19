@@ -40,6 +40,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/location.svg
   SvgGenImage get location => const SvgGenImage('assets/icons/location.svg');
 
+  /// File path: assets/icons/name.svg
+  SvgGenImage get name => const SvgGenImage('assets/icons/name.svg');
+
   /// File path: assets/icons/notification.svg
   SvgGenImage get notification =>
       const SvgGenImage('assets/icons/notification.svg');
@@ -52,6 +55,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/person.svg
   SvgGenImage get person => const SvgGenImage('assets/icons/person.svg');
+
+  /// File path: assets/icons/phone.svg
+  SvgGenImage get phone => const SvgGenImage('assets/icons/phone.svg');
 
   /// File path: assets/icons/routing.svg
   SvgGenImage get routing => const SvgGenImage('assets/icons/routing.svg');
@@ -76,10 +82,12 @@ class $AssetsIconsGen {
         email,
         home,
         location,
+        name,
         notification,
         order,
         password,
         person,
+        phone,
         routing,
         search,
         shieldDone,

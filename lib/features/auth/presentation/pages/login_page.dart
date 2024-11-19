@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oshop_coderay/features/auth/domain/entities/request/login_request.dart';
+import '../../domain/entities/request/login_request.dart';
 import '../../../../core/assets/assets.gen.dart';
 import '../../../../core/components/buttons.dart';
 
 import '../../../../core/components/spaces.dart';
 import '../../../../core/constants/colors.dart';
 import '../controllers/auth_controller.dart';
+import '../navigation/auth_routes.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -85,7 +86,7 @@ class LoginPage extends StatelessWidget {
           const SpaceHeight(50.0),
           InkWell(
             onTap: () {
-              // context.goNamed(RouteConstants.register);
+              Get.toNamed(AuthRoutes.register);
             },
             child: const Text.rich(
               TextSpan(

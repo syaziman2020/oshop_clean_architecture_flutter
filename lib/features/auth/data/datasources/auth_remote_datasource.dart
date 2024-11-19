@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'
+    as secure_storage;
+
 import '../../../../core/constants/main_url.dart';
 import '../models/request/login_request_model.dart';
 import '../models/request/register_request_model.dart';
 import '../models/response/auth_model.dart';
 import '../models/response/message_validate.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'
-    as secure_storage;
 
 abstract class AuthRemoteDatasource {
   Future<AuthModel> login(LoginRequestModel request);
@@ -39,9 +40,7 @@ class AuthRemoteDataSourceImplementation extends AuthRemoteDatasource {
         await storage.write(key: 'save', value: result.accessToken);
         return result;
       } else {
-        final errorResponse = MessageValidateModel.fromJson(response.data);
-
-        throw Exception(errorResponse.message);
+        throw MessageValidateModel.fromJson(response.data);
       }
     } catch (e) {
       rethrow;
@@ -65,29 +64,36 @@ class AuthRemoteDataSourceImplementation extends AuthRemoteDatasource {
 
       if (response.statusCode == 200) {
         await storage.delete(key: 'save');
-        return MessageValidateModel.fromRawJson(response.data);
+        return MessageValidateModel.fromJson(response.data);
       } else {
-        throw MessageValidateModel.fromRawJson(response.data);
+        throw MessageValidateModel.fromJson(response.data);
       }
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 
   @override
   Future<AuthModel> register(RegisterRequestModel request) async {
     try {
-      final response =
-          await dio.post('${MainUrl.url}/register', data: request.toRawJson());
+      final response = await dio.post('${MainUrl.url}/register',
+          data: request.toJson(),
+          options: Options(
+            headers: {
+              'Accept': 'application/json',
+              "Content-Type": "application/json"
+            },
+            validateStatus: (status) => status != null && status < 500,
+          ));
       if (response.statusCode == 201) {
-        final AuthModel result = AuthModel.fromRawJson(response.data);
+        final AuthModel result = AuthModel.fromJson(response.data);
         await storage.write(key: 'save', value: result.accessToken);
         return result;
       } else {
-        throw MessageValidateModel.fromRawJson(response.data);
+        throw MessageValidateModel.fromJson(response.data);
       }
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 }

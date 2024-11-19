@@ -27,13 +27,21 @@ class AuthRepositoryImplementation extends AuthRepository {
 
       return Right(authModel);
     } catch (e) {
-      return Left(
-        MessageValidateModel(
-          message: e.toString().contains('Exception:')
-              ? e.toString().split('Exception:')[1].trim()
-              : e.toString(),
-        ),
-      );
+      if (e is MessageValidateModel) {
+        return Left(
+          MessageValidateModel(
+            message: e.message, // Ambil pesan error dari model
+          ),
+        );
+      } else {
+        return Left(
+          MessageValidateModel(
+            message: e.toString().contains('Exception:')
+                ? e.toString().split('Exception:')[1].trim()
+                : e.toString(),
+          ),
+        );
+      }
     }
   }
 
@@ -47,8 +55,15 @@ class AuthRepositoryImplementation extends AuthRepository {
     } catch (e) {
       if (e is MessageValidate) {
         return Left(MessageValidateModel(message: e.message));
+      } else {
+        return Left(
+          MessageValidateModel(
+            message: e.toString().contains('Exception:')
+                ? e.toString().split('Exception:')[1].trim()
+                : e.toString(),
+          ),
+        );
       }
-      return Left(MessageValidateModel(message: e.toString()));
     }
   }
 
@@ -71,7 +86,13 @@ class AuthRepositoryImplementation extends AuthRepository {
       if (e is MessageValidate) {
         return Left(MessageValidateModel(message: e.message));
       }
-      return Left(MessageValidateModel(message: e.toString()));
+      return Left(
+        MessageValidateModel(
+          message: e.toString().contains('Exception:')
+              ? e.toString().split('Exception:')[1].trim()
+              : e.toString(),
+        ),
+      );
     }
   }
 }
