@@ -1,4 +1,4 @@
-import 'package:oshop_coderay/features/home/domain/entities/response/category_response.dart';
+import '../../domain/entities/response/category_response.dart';
 
 class CategoryModel extends CategoryResponse {
   final String image;

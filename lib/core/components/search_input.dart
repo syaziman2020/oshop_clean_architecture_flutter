@@ -5,14 +5,17 @@ import '../constants//colors.dart';
 class SearchInput extends StatelessWidget {
   final TextEditingController controller;
   final Function(String value)? onChanged;
+  final FocusNode? onFocus;
+  final bool autoFocus;
   final VoidCallback? onTap;
 
-  const SearchInput({
-    super.key,
-    required this.controller,
-    this.onChanged,
-    this.onTap,
-  });
+  const SearchInput(
+      {super.key,
+      required this.controller,
+      this.onChanged,
+      this.onTap,
+      this.onFocus,
+      this.autoFocus = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,8 @@ class SearchInput extends StatelessWidget {
       ),
       child: TextFormField(
         onTap: onTap,
+        focusNode: onFocus,
+        autofocus: autoFocus,
         readOnly: onTap != null,
         controller: controller,
         onChanged: onChanged,

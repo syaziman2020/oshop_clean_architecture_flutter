@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:oshop_coderay/features/home/domain/entities/response/all_product_response.dart';
-import 'package:oshop_coderay/features/home/domain/entities/response/message_validate.dart';
-import 'package:oshop_coderay/features/home/domain/repositories/home_repository.dart';
+import '../entities/response/all_product_response.dart';
+import '../entities/response/message_validate.dart';
+import '../repositories/home_repository.dart';
 
 class GetProductsCase {
   final HomeRepository homeRepository;

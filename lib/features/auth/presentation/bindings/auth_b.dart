@@ -5,7 +5,6 @@ import '../../domain/usecases/logout_case.dart';
 import '../../domain/usecases/register_case.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/repositories/auth_repository_implementation.dart';
-import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_case.dart';
 import '../controllers/auth_controller.dart';
 

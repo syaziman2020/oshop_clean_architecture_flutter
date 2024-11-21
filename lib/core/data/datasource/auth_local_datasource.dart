@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:oshop_coderay/features/auth/data/models/response/auth_model.dart';
-import 'package:oshop_coderay/features/auth/domain/entities/response/auth_response.dart';
+import '../../../features/auth/data/models/response/auth_model.dart';
+import '../../../features/auth/domain/entities/response/auth_response.dart';
 
 abstract class AuthLocalDatasource {
   Future<void> saveAuthData(AuthModel authModel);

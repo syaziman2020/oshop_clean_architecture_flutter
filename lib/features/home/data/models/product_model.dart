@@ -1,4 +1,4 @@
-import 'package:oshop_coderay/features/home/domain/entities/response/all_product_response.dart';
+import '../../domain/entities/response/all_product_response.dart';
 
 class ProductModel extends AllProductResponse {
   final List<Product> data;
@@ -11,7 +11,11 @@ class ProductModel extends AllProductResponse {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         currentPage: json["current_page"],
-        data: List<Product>.from(json["data"].map((x) => x)),
+        data: List<Product>.from(
+          json["data"].map(
+            (x) => Product.fromJson(x),
+          ),
+        ),
         lastPage: json["last_page"],
       );
 }

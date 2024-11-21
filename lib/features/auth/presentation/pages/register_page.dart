@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oshop_coderay/features/auth/domain/entities/request/register_request.dart';
-import 'package:oshop_coderay/features/auth/presentation/controllers/auth_controller.dart';
+import '../../domain/entities/request/register_request.dart';
+import '../controllers/auth_controller.dart';
 
 import '../../../../core/assets/assets.gen.dart';
 import '../../../../core/components/buttons.dart';

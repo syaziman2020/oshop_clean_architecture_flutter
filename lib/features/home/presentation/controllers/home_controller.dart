@@ -1,10 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
-import 'package:oshop_coderay/features/home/data/models/product_model.dart';
-import 'package:oshop_coderay/features/home/domain/entities/response/all_product_response.dart';
-import 'package:oshop_coderay/features/home/domain/entities/response/category_response.dart';
-import 'package:oshop_coderay/features/home/domain/usecases/get_categories_case.dart';
-import 'package:oshop_coderay/features/home/domain/usecases/get_products_case.dart';
+import '../../domain/entities/response/all_product_response.dart';
+import '../../domain/entities/response/category_response.dart';
+import '../../domain/usecases/get_categories_case.dart';
+import '../../domain/usecases/get_products_case.dart';
 
 import '../../domain/entities/response/message_validate.dart';
 
@@ -23,16 +22,27 @@ class HomeController extends GetxController {
       getCategories(),
       getProducts(),
     ]);
+    productListFiltered.addAll(productList);
   }
 
   RxBool loadingCategories = false.obs;
 
   RxBool loadingProducts = false.obs;
+  RxBool loadingMoreProducts = false.obs;
+  RxBool searchStatus = false.obs;
+
+  Rx<MessageValidate> messageValidate = MessageValidate(message: "").obs;
+  Rx<MessageValidate> errorProducts = MessageValidate(message: "").obs;
 
   RxList categories = <CategoryResponse>[].obs;
 
+  RxInt currentPage = 0.obs;
+
   Rx<AllProductResponse> allProducts =
       AllProductResponse(currentPage: 1, products: [], lastPage: 1).obs;
+
+  RxList productList = <ProductResponse>[].obs;
+  RxList productListFiltered = <ProductResponse>[].obs;
 
   Future<void> getCategories() async {
     loadingCategories(true);
@@ -41,7 +51,7 @@ class HomeController extends GetxController {
           await getCategoriesCase.execute();
       result.fold((l) {
         loadingCategories(false);
-        Get.snackbar("Failed", l.message);
+        messageValidate.value = l;
       }, (r) {
         loadingCategories(false);
         categories.assignAll(r);
@@ -61,16 +71,51 @@ class HomeController extends GetxController {
           await getProductsCase.execute(page);
       result.fold((l) {
         loadingProducts(false);
-        Get.snackbar("Failed", l.message);
+        errorProducts.value = l;
       }, (r) {
         loadingProducts(false);
         allProducts.value = r;
+        currentPage.value = r.currentPage;
+        productList.assignAll(r.products);
       });
     } catch (e) {
       loadingProducts(false);
       Get.snackbar("Failed", e.toString());
     } finally {
       loadingProducts(false);
+    }
+  }
+
+  Future<void> refreshProducts() async {
+    await getProducts(page: 1);
+  }
+
+  Future<void> loadMoreProducts() async {
+    int nextPage = currentPage.value + 1;
+    if (nextPage <= allProducts.value.lastPage) {
+      loadingMoreProducts(true);
+
+      Either<MessageValidate, AllProductResponse> result =
+          await getProductsCase.execute(nextPage);
+      result.fold((l) {}, (r) {
+        currentPage.value = r.currentPage;
+        loadingMoreProducts(false);
+        searchStatus(false);
+        productList.addAllIf(
+            nextPage <= allProducts.value.lastPage, r.products);
+      });
+    }
+  }
+
+  void filterProducts(String query) {
+    if (query.isEmpty) {
+      productListFiltered.value = productList;
+    } else {
+      searchStatus(true);
+      productListFiltered.value = productList
+          .where((product) =>
+              product.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     }
   }
 }
