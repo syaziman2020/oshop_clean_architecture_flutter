@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:oshop_coderay/features/home/presentation/pages/detail_product_page.dart';
 import 'package:oshop_coderay/features/home/presentation/pages/see_all_page.dart';
 import '../bindings/home_b.dart';
 import 'home_routes.dart';
@@ -10,7 +11,7 @@ class HomeNavigation {
   static final routes = [
     GetPage(
       name: HomeRoutes.dashboard,
-      page: () => DashboardPage(
+      page: () => const DashboardPage(
         currentTab: 0,
       ),
       bindings: [AuthB(), HomeB()],

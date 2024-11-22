@@ -7,8 +7,13 @@ import '../../../domain/entities/response/category_response.dart';
 import '../category_button.dart';
 
 class MenuCategories extends StatelessWidget {
-  MenuCategories({super.key, this.categoryCount});
+  MenuCategories({
+    super.key,
+    this.categoryCount,
+    required this.onTapCategory,
+  });
   final int? categoryCount;
+  final Function onTapCategory;
 
   final homeController = Get.find<HomeController>();
 
@@ -51,7 +56,10 @@ class MenuCategories extends StatelessWidget {
                     child: CategoryButton(
                       imagePath: e.imageUrl,
                       label: e.name,
-                      onPressed: () {},
+                      onPressed: () {
+                        homeController.categoryTrigger.value = e.id;
+                        onTapCategory();
+                      },
                     ),
                   );
                 }).toList(),

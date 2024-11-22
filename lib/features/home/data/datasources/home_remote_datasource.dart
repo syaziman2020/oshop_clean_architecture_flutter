@@ -11,6 +11,7 @@ import '../../../../core/data/datasource/auth_local_datasource.dart';
 abstract class HomeRemoteDatasource {
   Future<List<CategoryModel>> getCategories();
   Future<ProductModel> getProducts(int page);
+  Future<ProductModel> getProductCategories(int category, int page);
 }
 
 class HomeRemoteDatasourceImplementation extends HomeRemoteDatasource {
@@ -50,6 +51,31 @@ class HomeRemoteDatasourceImplementation extends HomeRemoteDatasource {
           await AuthLocalDatasourceImplementation(storage).getAuthData();
       final response = await dio.get(
         "${MainUrl.url}/products?page=$page",
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${authData?.token}'
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data["data"]);
+      } else {
+        throw MessageValidateModel.fromJson(response.data);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ProductModel> getProductCategories(int category, int page) async {
+    try {
+      final authData =
+          await AuthLocalDatasourceImplementation(storage).getAuthData();
+      final response = await dio.get(
+        "${MainUrl.url}/products?category_id=$category&page=$page",
         options: Options(
           headers: {
             'Accept': 'application/json',

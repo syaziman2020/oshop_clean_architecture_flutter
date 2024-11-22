@@ -64,4 +64,30 @@ class HomeRepositoryImplementation extends HomeRepository {
       }
     }
   }
+
+  @override
+  Future<Either<MessageValidate, AllProductResponse>> getProductCategories(
+      int category, int page) async {
+    try {
+      final ProductModel products =
+          await homeRemoteDatasource.getProductCategories(category, page);
+      return Right(products);
+    } catch (e) {
+      if (e is MessageValidateModel) {
+        return Left(
+          MessageValidateModel(
+            message: e.message,
+          ),
+        );
+      } else {
+        return Left(
+          MessageValidateModel(
+            message: e.toString().contains('Exception:')
+                ? e.toString().split('Exception:')[1].trim()
+                : e.toString(),
+          ),
+        );
+      }
+    }
+  }
 }

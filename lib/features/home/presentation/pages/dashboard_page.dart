@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:oshop_coderay/features/home/presentation/controllers/home_controller.dart';
+import 'package:oshop_coderay/features/home/presentation/pages/product_category_page.dart';
 import 'package:oshop_coderay/features/home/presentation/pages/product_page.dart';
 
 import '../../../../core/assets/assets.gen.dart';
@@ -18,6 +21,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final homeController = Get.find<HomeController>();
   late int _selectedIndex;
   bool _searchFocused = false;
 
@@ -34,6 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     _selectedIndex = widget.currentTab;
+
     super.initState();
   }
 
@@ -92,9 +97,12 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           // const SearchPage(),
           // const CartPage(),
-          ProductPage(
-            focusStatus: _searchFocused,
-          ),
+          (homeController.categoryTrigger.value != 0)
+              ? ProductCategoryPage(
+                  category: homeController.categoryTrigger.value)
+              : ProductPage(
+                  focusStatus: _searchFocused,
+                ),
           const Center(
             child: Text('This Page 2'),
           ),

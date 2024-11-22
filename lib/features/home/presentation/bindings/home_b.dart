@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../data/datasources/home_remote_datasource.dart';
 import '../../data/repositories/home_repository_implementation.dart';
 import '../../domain/usecases/get_categories_case.dart';
+import '../../domain/usecases/get_product_categories.dart';
 import '../../domain/usecases/get_products_case.dart';
 import '../controllers/home_controller.dart';
 
@@ -30,6 +31,11 @@ class HomeB extends Bindings {
           ),
         ),
         getProductsCase: GetProductsCase(
+          HomeRepositoryImplementation(
+            homeRemoteDatasource: Get.find<HomeRemoteDatasource>(),
+          ),
+        ),
+        getProductCategoriesCase: GetProductCategoriesCase(
           HomeRepositoryImplementation(
             homeRemoteDatasource: Get.find<HomeRemoteDatasource>(),
           ),

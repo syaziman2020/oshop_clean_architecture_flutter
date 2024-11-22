@@ -7,19 +7,23 @@ import '../../../../core/components/spaces.dart';
 import '../../../../core/constants/colors.dart';
 import '../widgets/product_card.dart';
 
-class ProductPage extends StatelessWidget {
-  ProductPage({
-    super.key,
-    this.focusStatus = false,
-  });
+class ProductCategoryPage extends StatelessWidget {
+  ProductCategoryPage(
+      {super.key, this.focusStatus = false, required this.category});
   final bool? focusStatus;
+  final int category;
 
   final TextEditingController searchController = TextEditingController();
 
   final homeController = Get.find<HomeController>();
 
+  void _initialize() async {
+    homeController.getProductCategories(category: category);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() => _initialize());
     return Scaffold(
       body: ListView(
         physics: const NeverScrollableScrollPhysics(),
@@ -27,7 +31,7 @@ class ProductPage extends StatelessWidget {
         children: [
           SearchInput(
             onChanged: (change) {
-              homeController.filterProducts(change);
+              homeController.filterProductCategories(change);
             },
             onFocus: FocusNode(),
             autoFocus: focusStatus ?? false,
@@ -37,8 +41,8 @@ class ProductPage extends StatelessWidget {
           Obx(() {
             List data = (homeController.searchStatus.value ||
                     searchController.text.isNotEmpty)
-                ? homeController.productListFiltered
-                : homeController.productList;
+                ? homeController.productListFilteredCategories
+                : homeController.productListCategories;
 
             String errorMessage = homeController.errorProducts.value.message;
             if (homeController.loadingProducts.value) {
@@ -95,7 +99,7 @@ class ProductPage extends StatelessWidget {
                       scrollNotification.metrics.pixels ==
                           scrollNotification.metrics.maxScrollExtent) {
                     searchController.clear();
-                    homeController.loadMoreProducts();
+                    homeController.loadMoreProductCategories(category);
                   }
                   return false;
                 },
@@ -106,7 +110,7 @@ class ProductPage extends StatelessWidget {
                     backgroundColor: AppColors.white,
                     color: AppColors.primary,
                     onRefresh: () async {
-                      homeController.refreshProducts();
+                      homeController.refreshProductCategories(category);
                     },
                     child: GridView.builder(
                         padding: const EdgeInsets.only(bottom: 14),
@@ -120,8 +124,9 @@ class ProductPage extends StatelessWidget {
                         ),
                         itemCount: (homeController.searchStatus.value ||
                                 searchController.text.isNotEmpty)
-                            ? homeController.productListFiltered.length
-                            : homeController.productList.length,
+                            ? homeController
+                                .productListFilteredCategories.length
+                            : homeController.productListCategories.length,
                         itemBuilder: (context, index) {
                           return ProductCard(
                             data: data[index],

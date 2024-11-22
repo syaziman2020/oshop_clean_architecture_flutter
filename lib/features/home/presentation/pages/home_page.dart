@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
 
   final homeController = Get.find<HomeController>();
   final Function(int tab) onTabChange;
-  Function(bool change)? onSearchChange;
+  final Function(bool change)? onSearchChange;
 
   final List<String> banners1 = [
     Assets.images.banner1.path,
@@ -60,13 +60,21 @@ class HomePage extends StatelessWidget {
               Get.to(
                 () => SeeAllPage(
                   titleHeader: "All Categories",
-                  widget: MenuCategories(),
+                  widget: MenuCategories(
+                    onTapCategory: () {
+                      onTabChange(1);
+                      Get.back();
+                    },
+                  ),
                 ),
               );
             },
           ),
           const SpaceHeight(12.0),
           MenuCategories(
+            onTapCategory: () {
+              onTabChange(1);
+            },
             categoryCount: 4,
           ),
           Obx(() {
@@ -99,7 +107,9 @@ class HomePage extends StatelessWidget {
             } else if (errorMessage.isEmpty) {
               return ProductList(
                 title: 'Featured Product',
-                onSeeAllTap: () {},
+                onSeeAllTap: () {
+                  onTabChange(1);
+                },
                 items: (homeController.productList as List<ProductResponse>)
                     .take(2)
                     .toList(),
@@ -120,6 +130,7 @@ class HomePage extends StatelessWidget {
               );
             } else if (!homeController.loadingCategories.value &&
                 !homeController.loadingProducts.value) {
+              homeController.categoryTrigger(0);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -129,14 +140,16 @@ class HomePage extends StatelessWidget {
                     final filteredProducts =
                         (homeController.productList as List<ProductResponse>)
                             .where((product) {
-                              return product.categoryId ==
-                                  e.id; // Kondisi where
+                              return product.categoryId == e.id;
                             })
                             .take(2)
                             .toList();
                     return ProductList(
                       title: e.name,
-                      onSeeAllTap: () {},
+                      onSeeAllTap: () {
+                        homeController.categoryTrigger(e.id);
+                        onTabChange(1);
+                      },
                       items: filteredProducts,
                     );
                   }),

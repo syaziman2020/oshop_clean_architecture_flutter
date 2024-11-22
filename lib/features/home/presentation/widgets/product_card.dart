@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oshop_coderay/core/extensions/int_ext.dart';
 import 'package:oshop_coderay/features/home/domain/entities/response/all_product_response.dart';
+import 'package:oshop_coderay/features/home/presentation/navigation/home_routes.dart';
+import 'package:oshop_coderay/features/home/presentation/pages/detail_product_page.dart';
 
 import '../../../../core/assets/assets.gen.dart';
 import '../../../../core/components/spaces.dart';
@@ -14,11 +17,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // context.goNamed(
-        //   RouteConstants.productDetail,
-        //   pathParameters: PathParameters().toMap(),
-        //   extra: data,
-        // );
+        Get.to(() => DetailProductPage(
+              productResponse: data,
+            ));
       },
       child: Container(
         padding: const EdgeInsets.all(10.0),
